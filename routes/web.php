@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ParticipantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\ParticipantController::class, 'index'])->name('participants.index');
+Route::post('/store', [ParticipantController::class, 'store'])->name('participants.store');
+
+Route::get('/home', [App\Http\Controllers\ParticipantController::class, 'index'])->name('home');
 
 Auth::routes();
 
