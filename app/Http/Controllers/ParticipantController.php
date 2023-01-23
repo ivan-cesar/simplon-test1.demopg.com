@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Participant;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Mail;
+
+use PDF;
 
 use Illuminate\Http\Request;
 
@@ -29,6 +32,15 @@ class ParticipantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     
+     	 // Générer un PDF
+	public function createpdf() {
+		 
+        $data['participants'] = Participant::all();
+        $pdf = PDF::loadView('participants.pdf', $data)->setPaper('a4');
+        $name = "Participants.pdf";
+		return $pdf->stream($name);
+    }
     public function create()
     {
         //
@@ -64,10 +76,10 @@ class ParticipantController extends Controller
     		
     		if($prp->save()){
 
-        	/*		@Mail::send('emails.notification',$user, function($message) use($user) {
-        				$message->from('contact@inside.demopg.com','SIMPLON CI')->to($user['email'])->subject('Accès SIMPLON CI ');
+        			@Mail::send('emails.notification',$user, function($message) use($user) {
+        				$message->from('contact@implon-test1.demopg.com','SIMPLON CI')->to($user['email'])->subject('Accès SIMPLON CI ');
 			});
-			*/
+			
 			
 			session()->flash('type', 'alert-success');
 			session()->flash('message', 'Inscription crée avec succès');
